@@ -1,24 +1,18 @@
+@Library('my-shared-library') _
 pipeline {
     agent any
 
     stages {
-        stage('code commit') {
-            steps {
-                git branch: 'branch1', url: 'https://github.com/ShivaPVuppala/test1.git'
-            }
-        }
         stage('build') {
             steps {
-                // bat '"C:\\Program Files\\apache-maven-3.9.3\\bin\\mvn" version'
+                runMvnCmd()
                 bat '"C:\\Program Files\\apache-maven-3.9.4\\bin\\mvn" clean install'
                 // shell ('mvn clean install')
             }
         }  
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('sonarserver') {
-                    bat '"C:\\Program Files\\apache-maven-3.9.4\\bin\\mvn" clean package sonar:sonar'
-                }
+                sQAnalysis()
             }
         }
         stage('Deploy') {
