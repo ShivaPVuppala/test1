@@ -1,2 +1,5 @@
 @Library('my-shared-library') _
-jenkins()
+PipelineBuild {
+    buildtype = "backend"
+    mavengoals = "clean install"
+}
